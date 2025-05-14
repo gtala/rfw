@@ -62,10 +62,10 @@ const testimonials = [
 ];
 
 export default function RealFunWave() {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalVideo, setModalVideo] = useState(null);
+  const [modalVideo, setModalVideo] = useState<string | null>(null);
   const [thumbnails, setThumbnails] = useState<(string | null)[]>([]);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -78,7 +78,7 @@ export default function RealFunWave() {
     }
   };
 
-  const openVideoModal = (videoUrl) => {
+  const openVideoModal = (videoUrl: string) => {
     setModalVideo(videoUrl);
     setModalOpen(true);
   };
@@ -261,7 +261,7 @@ export default function RealFunWave() {
         {modalOpen && (
           <div className={styles.videoModal} onClick={closeModal}>
             <div className={styles.videoModalContent} onClick={e => e.stopPropagation()}>
-              <video src={modalVideo} controls autoPlay style={{width:'100%',borderRadius:'16px',background:'#000'}}/>
+              <video src={modalVideo || undefined} controls autoPlay style={{width:'100%',borderRadius:'16px',background:'#000'}}/>
               <button className={styles.closeModalBtn} onClick={closeModal} aria-label="Cerrar">✕</button>
             </div>
           </div>
