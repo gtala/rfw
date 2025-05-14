@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect } from "react";
 import styles from "./realfunwave.module.css";
 
-const cards = []
+const cards: any[] = []
 /*[
   {
     title: "Incluye",
