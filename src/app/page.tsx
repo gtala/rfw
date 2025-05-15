@@ -73,6 +73,8 @@ export default function RealFunWave() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [fade, setFade] = useState(true);
   const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
+  // Estado para el menú hamburguesa
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleAudio = () => {
     setMuted((m) => !m);
@@ -126,6 +128,10 @@ export default function RealFunWave() {
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#fff" strokeWidth="2"/><circle cx="20" cy="20" r="12" stroke="#ff9800" strokeWidth="2"/></svg>
           <span className={styles.brand}>REAL FUN WAVE</span>
         </div>
+        {/* Hamburguesa en mobile */}
+        <button className={styles.hamburgerBtn} onClick={() => setMenuOpen(true)} aria-label="Abrir menú" type="button">
+          <span style={{fontSize:28, color:'#fff'}}>☰</span>
+        </button>
         <nav className={styles.navLinks}>
           <a href="#quienes">QUIÉNES SOMOS</a>
           <a href="#experiencia">EXPERIENCIA</a>
@@ -133,6 +139,21 @@ export default function RealFunWave() {
           <a href="#testimonios">TESTIMONIOS</a>
           <a href="#contacto">CONTACTO</a>
         </nav>
+        {/* Menú lateral hamburguesa */}
+        {menuOpen && (
+          <div className={styles.menuOverlay} onClick={() => setMenuOpen(false)}>
+            <div className={styles.menuDrawer} onClick={e => e.stopPropagation()}>
+              <button className={styles.closeMenuBtn} onClick={() => setMenuOpen(false)} aria-label="Cerrar menú">✕</button>
+              <nav className={styles.menuNavLinks}>
+                <a href="#quienes" onClick={() => setMenuOpen(false)}>QUIÉNES SOMOS</a>
+                <a href="#experiencia" onClick={() => setMenuOpen(false)}>EXPERIENCIA</a>
+                <a href="#viajes" onClick={() => setMenuOpen(false)}>PRÓXIMOS VIAJES</a>
+                <a href="#testimonios" onClick={() => setMenuOpen(false)}>TESTIMONIOS</a>
+                <a href="#contacto" onClick={() => setMenuOpen(false)}>CONTACTO</a>
+              </nav>
+            </div>
+          </div>
+        )}
       </header>
       <div className={styles.rfwPage}>
         {/* Hero Section with background video */}

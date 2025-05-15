@@ -134,22 +134,117 @@
 
 @media (max-width: 600px) {
   .heroOverlay h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
   }
-  .heroOverlay p {
-    font-size: 1rem;
-  }
-  .about, .experiences, .testimonials, .cta {
-    padding: 24px 8px 16px 8px;
-    margin-top: 18px;
-  }
-  .ctaBtn {
-    font-size: 1rem;
-    padding: 12px 18px;
+  .heroOverlay h3, .heroOverlay p {
+    font-size: 0.98rem;
+    margin-bottom: 0;
   }
   .hero {
-    min-height: 40vh;
-    height: 40vh;
+    min-height: 36vh;
+    height: 36vh;
+    padding-top: 12px;
+  }
+  .about, .experiences, .testimonials, .cta {
+    padding: 14px 4px 10px 4px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  .ctaBtn {
+    font-size: 0.98rem;
+    padding: 10px 12px;
+    border-radius: 18px;
+  }
+  .cardGrid {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .card {
+    width: 97vw;
+    max-width: 97vw;
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+  .cardImg {
+    height: 110px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+  }
+  .cardContent {
+    padding: 8px 4px 8px 4px;
+    gap: 6px;
+  }
+  .cardContent h2 {
+    font-size: 0.98rem;
+    margin-bottom: 2px;
+  }
+  .cardContent p {
+    font-size: 0.92rem;
+  }
+  .testimonialsSection {
+    margin: 24px auto !important;
+    max-width: 98vw !important;
+    padding: 0 2px !important;
+  }
+  .testimonialsSection h2 {
+    font-size: 1.1rem !important;
+    margin-bottom: 12px !important;
+  }
+  .testimonialsSection blockquote {
+    font-size: 0.98rem !important;
+    min-height: 60px !important;
+    padding: 10px 4px !important;
+  }
+  .testimonialsSection button[aria-label] {
+    font-size: 16px !important;
+    left: 2px !important;
+    right: 2px !important;
+  }
+  .testimonialsSection div[style*='marginTop:24px'] {
+    margin-top: 10px !important;
+    font-size: 0.98rem !important;
+  }
+  .testimonialsSection div[style*='position: absolute'] span {
+    width: 8px !important;
+    height: 8px !important;
+  }
+  .contactSection {
+    padding: 8px 4px 8px 4px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  .contactSection h2 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .contactForm input,
+  .contactForm textarea {
+    font-size: 0.95rem;
+    padding: 7px 8px;
+    border-radius: 7px;
+  }
+  .contactForm button {
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    border-radius: 10px;
+  }
+  .footer {
+    padding: 8px 0 4px 0;
+    margin-top: 10px;
+  }
+  .socialLinks {
+    gap: 8px;
+  }
+  .whatsappBtn {
+    bottom: 8px;
+    right: 8px;
+    width: 38px;
+    height: 38px;
   }
 }
 
@@ -750,4 +845,82 @@
   .cardContent p {
     font-size: 1.1rem;
   }
+}
+
+@media (max-width: 700px) {
+  .navLinks {
+    display: none;
+  }
+  .hamburgerBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    margin-left: auto;
+    margin-right: 8px;
+    z-index: 120;
+    cursor: pointer;
+    padding: 8px;
+  }
+}
+.hamburgerBtn {
+  display: none;
+}
+.menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.menuDrawer {
+  width: 80vw;
+  max-width: 320px;
+  background: #111;
+  height: 100vh;
+  box-shadow: 2px 0 24px rgba(0,0,0,0.18);
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: slideInMenu 0.22s cubic-bezier(.7,.2,.3,1);
+}
+@keyframes slideInMenu {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.closeMenuBtn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #ff9800;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+}
+.menuNavLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 48px;
+}
+.menuNavLinks a {
+  color: #fff;
+  font-size: 1.25rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.menuNavLinks a:hover {
+  color: #ff9800;
 } 
