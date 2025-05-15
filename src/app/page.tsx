@@ -66,7 +66,7 @@ const testimonials = [
 
 export default function RealFunWave() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVideo, setModalVideo] = useState<string | null>(null);
   const [thumbnails, setThumbnails] = useState<(string | null)[]>([]);
@@ -80,6 +80,9 @@ export default function RealFunWave() {
     setMuted((m) => !m);
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
+      if (!videoRef.current.muted) {
+        videoRef.current.play();
+      }
     }
   };
 
@@ -164,20 +167,23 @@ export default function RealFunWave() {
             className={styles.heroVideo}
             src="https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/hero.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9oZXJvLm1wNCIsImlhdCI6MTc0NzI0MzA5NywiZXhwIjoxNzc4Nzc5MDk3fQ.5_W2EEomSJdIinN5o8zXJzwzId60Rl003mcxJnMSFMI"
             autoPlay
-            muted
+            muted={muted}
             loop
             playsInline
             preload="auto"
+            style={{objectFit:'cover'}}
           />
           <div className={styles.heroFadeBottom}></div>
-          <button
-            className={styles.audioBtn}
-            onClick={toggleAudio}
-            aria-label={muted ? "Activar audio" : "Desactivar audio"}
-            type="button"
-          >
-            {muted ? "🔇" : "🔊"}
-          </button>
+          {!muted && (
+            <button
+              className={styles.audioBtn}
+              onClick={toggleAudio}
+              aria-label={muted ? "Activar audio" : "Desactivar audio"}
+              type="button"
+            >
+              {muted ? "🔇" : "🔊"}
+            </button>
+          )}
           <div className={styles.heroOverlay}>
             <h1>Real Fun Wave</h1>
             <h3 style={{fontWeight:400, marginTop:8, color:'#ff9800', fontSize:'1.25em', letterSpacing:'0.01em'}}>Más que un surftrip: experiencias, comunidad y diversión real</h3>

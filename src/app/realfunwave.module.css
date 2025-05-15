@@ -133,6 +133,23 @@
 }
 
 @media (max-width: 600px) {
+  .hero {
+    min-height: 100vh;
+    height: 100vh;
+    padding-top: 0;
+  }
+  .heroVideo {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    object-fit: cover;
+  }
+  .heroOverlay {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0 8px;
+  }
   .heroOverlay h1 {
     font-size: 1.3rem;
     margin-bottom: 8px;
@@ -140,11 +157,6 @@
   .heroOverlay h3, .heroOverlay p {
     font-size: 0.98rem;
     margin-bottom: 0;
-  }
-  .hero {
-    min-height: 36vh;
-    height: 36vh;
-    padding-top: 12px;
   }
   .about, .experiences, .testimonials, .cta {
     padding: 14px 4px 10px 4px;
