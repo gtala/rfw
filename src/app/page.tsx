@@ -2,25 +2,11 @@
 import { useRef, useState, useEffect } from "react";
 import styles from "./realfunwave.module.css";
 import { motion } from "framer-motion";
+import LogoWithText from "../components/LogoWithText";
+import RootLayout from "./layout";
 
 const cards: any[] = []
-/*[
-  {
-    title: "Incluye",
-    text: "Diseño visual + desarrollo en plataforma web (Wix, Wordpress o HTML/CSS)",
-    img: "https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/467602731_18312274591166143_3341892348689306037_n.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS80Njc2MDI3MzFfMTgzMTIyNzQ1OTExNjYxNDNfMzM0MTg5MjM0ODY4OTMwNjAzN19uLmpwZyIsImlhdCI6MTc0NzIzNTg3MywiZXhwIjoxNzc4NzcxODczfQ.ZOCxLYwJf-Crli9ghHXcwPfG0umHaIfXIZ0eapR8KOE"
-  },
-  {
-    title: "Contenido estimado",
-    text: "Secciones: Hero / Quiénes somos / Experiencias y próximos viajes / Testimonios / CTA de contacto o inscripción",
-    img: "https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/470178703_18314745352166143_1434773567276129959_n.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS80NzAxNzg3MDNfMTgzMTQ3NDUzNTIxNjYxNDNfMTQzNDc3MzU2NzI3NjEyOTk1OV9uLmpwZyIsImlhdCI6MTc0NzIzNTg5NCwiZXhwIjoxNzc4NzcxODk0fQ.7HReG4amqCr0DxaqAivurc8brE9gjQRuO4Y4sPcyE68"
-  },
-  {
-    title: "Estilo visual",
-    text: "Cinemático, inspirado en el mundo del surf y la aventura. Uso de fotografías, videos, animaciones sutiles y scroll fluido.",
-    img: "https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/470178703_18314745352166143_1434773567276129959_n.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS80NzAxNzg3MDNfMTgzMTQ3NDUzNTIxNjYxNDNfMTQzNDc3MzU2NzI3NjEyOTk1OV9uLmpwZyIsImlhdCI6MTc0NzIzNTg5NCwiZXhwIjoxNzc4NzcxODk0fQ.7HReG4amqCr0DxaqAivurc8brE9gjQRuO4Y4sPcyE68"
-  }
-];*/
+
 
 const videoCards = [
    {
@@ -68,8 +54,8 @@ const testimonials = [
 // Definir slides minimalistas
 const slides = [
   {
-    title: 'Real Fun Wave',
-    video: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/hero.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9oZXJvLm1wNCIsImlhdCI6MTc0NzI0MzA5NywiZXhwIjoxNzc4Nzc5MDk3fQ.5_W2EEomSJdIinN5o8zXJzwzId60Rl003mcxJnMSFMI'
+    title: 'MÁS QUE UN SURFTRIP\nES REAL FUN',
+    imageOnly: true // Only show image background, no video
   },
   {
     title: 'Clases de surf',
@@ -89,36 +75,104 @@ const slides = [
   }
 ];
 
-// Helper para animar letras
-function AnimatedTitle({ text }: { text: string }) {
-  const letters = text.split("");
+// Helper para animar palabras con diferentes efectos por slide
+function AnimatedTitle({ text, slideIdx }: { text: string, slideIdx: number }) {
+  if (slideIdx === 0) {
+    const lines = text.split("\n");
+    return (
+      <motion.span
+        style={{ display: "inline-block", width: "100%" }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.18
+            }
+          }
+        }}
+      >
+        {lines.map((line, i) => (
+          <span key={i} style={{ display: "block", overflow: "hidden" }}>
+            <motion.span
+              style={{ display: "block", originX: i === 0 ? 0 : 1 }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
+              {line}
+            </motion.span>
+          </span>
+        ))}
+      </motion.span>
+    );
+  }
+  const words = text.split(" ");
   return (
     <motion.span
       style={{ display: "inline-block", width: "100%" }}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.7 }}
+      animate="visible"
       variants={{
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: 0.045
+            staggerChildren: 0.15
           }
         }
       }}
     >
-      {letters.map((char, i) => (
-        <motion.span
-          key={i}
-          style={{ display: char === " " ? "inline-block" : "inline-block" }}
-          variants={{
-            hidden: { opacity: 0, y: 40 },
-            visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
-          }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
+      {words.map((word, i) => {
+        // Animación por slide y por palabra
+        let variants = {};
+        if (slideIdx === 1) {
+          // Slide 1: izquierda
+          variants = {
+            hidden: { opacity: 0, x: -80 },
+            visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
+          };
+        } else if (slideIdx === 2) {
+          // Slide 2: derecha
+          variants = {
+            hidden: { opacity: 0, x: 80 },
+            visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
+          };
+        } else if (slideIdx === 3) {
+          // Slide 3: fade + scale
+          variants = {
+            hidden: { opacity: 0, scale: 0.7 },
+            visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 400, damping: 24 } }
+          };
+        } else if (slideIdx === 4) {
+          // Slide 4: rotación
+          variants = {
+            hidden: { opacity: 0, rotate: -90 },
+            visible: { opacity: 1, rotate: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
+          };
+        } else {
+          // Default: fade in
+          variants = {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { type: "spring", stiffness: 400, damping: 24 } }
+          };
+        }
+        return (
+          <motion.span
+            key={i}
+            style={{ display: "block", overflow: "hidden" }}
+          >
+            <motion.span
+              style={{ display: "block", originX: i === 0 ? 0 : 1 }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            >
+              {word}
+            </motion.span>
+          </motion.span>
+        );
+      })}
     </motion.span>
   );
 }
@@ -134,6 +188,9 @@ export default function RealFunWave() {
   const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
   // Estado para el menú hamburguesa
   const [menuOpen, setMenuOpen] = useState(false);
+  // Estado para el slide activo
+  const [activeSlide, setActiveSlide] = useState(0);
+  const slideRefs = useRef<(HTMLElement | null)[]>([]);
 
   const toggleAudio = () => {
     setMuted((m) => !m);
@@ -182,36 +239,45 @@ export default function RealFunWave() {
     setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
   };
 
+  // Detectar slide activo con IntersectionObserver
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    slideRefs.current = slideRefs.current.slice(0, slides.length);
+    slides.forEach((_, idx) => {
+      if (!slideRefs.current[idx]) return;
+      const observer = new window.IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
+            setActiveSlide(idx);
+          }
+        },
+        { threshold: [0.7] }
+      );
+      observer.observe(slideRefs.current[idx]!);
+      observers.push(observer);
+    });
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
+
   return (
     <>
-      {/* Menú hamburguesa animado */}
-      <motion.button
-        initial={{ opacity: 0, scale: 0.7, x: 40 }}
-        animate={{ opacity: 1, scale: 1, x: 0 }}
-        transition={{ duration: 1, type: 'spring', bounce: 0.4, delay: 0.3 }}
-        style={{
-          position: 'fixed',
-          top: 32,
-          right: 32,
-          zIndex: 1001,
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: 0,
-          width: 48,
-          height: 48,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        aria-label="Abrir menú"
-      >
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-          <rect y="8" width="38" height="4" rx="2" fill="#111" />
-          <rect y="17" width="38" height="4" rx="2" fill="#111" />
-          <rect y="26" width="38" height="4" rx="2" fill="#111" />
-        </svg>
-      </motion.button>
+      {/* Logo + texto fijo arriba en todos los slides */}
+      <div style={{
+        position: 'fixed',
+        top: 36,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 3000,
+        width: 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <LogoWithText color="#fdd786" textColor="#FEC868" size={120} />
+      </div>
       <div style={{
         height: '100vh',
         width: '100vw',
@@ -222,6 +288,7 @@ export default function RealFunWave() {
         {slides.map((slide, idx) => (
           <section
             key={idx}
+            ref={el => { slideRefs.current[idx] = el; }}
             style={{
               position: 'relative',
               width: '100vw',
@@ -234,16 +301,19 @@ export default function RealFunWave() {
               scrollSnapAlign: 'start',
             }}
           >
-            <video
-              className={styles.heroVideo}
-              src={slide.video}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.8) contrast(1.1)'}}
-            />
+            {/* Only render video if not imageOnly */}
+            {!slide.imageOnly && slide.video && (
+              <video
+                className={styles.heroVideo}
+                src={slide.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.8) contrast(1.1)'}}
+              />
+            )}
             <div className={styles.heroFadeTop}></div>
             <div className={styles.heroFadeBottom}></div>
             <motion.div
@@ -254,15 +324,31 @@ export default function RealFunWave() {
               transition={{ duration: 1, ease: "easeOut" }}
               style={{zIndex:2}}
             >
-              <h1 style={{
-                fontSize: 'clamp(2.5rem, 8vw, 7rem)',
-                textAlign: 'center',
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
-                fontWeight: 900
-              }}>
-                <AnimatedTitle text={slide.title} />
-              </h1>
+              {idx === 0 ? (
+                <h1 style={{
+                  fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+                  textAlign: 'center',
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.03em',
+                  fontWeight: 900,
+                  color: '#FEC868',
+                  marginTop: 18
+                }}>
+                  <AnimatedTitle key={activeSlide === idx ? `active-${idx}` : `inactive-${idx}`} text={slide.title} slideIdx={idx} />
+                </h1>
+              ) : (
+                <h1 style={{
+                  fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+                  textAlign: 'center',
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.03em',
+                  fontWeight: 900,
+                  color: '#fff',
+                  marginTop: 18
+                }}>
+                  <AnimatedTitle key={activeSlide === idx ? `active-${idx}` : `inactive-${idx}`} text={slide.title} slideIdx={idx} />
+                </h1>
+              )}
             </motion.div>
           </section>
         ))}

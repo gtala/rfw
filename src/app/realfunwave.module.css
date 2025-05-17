@@ -48,11 +48,10 @@
 .heroOverlay h1 {
   font-size: 3rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
-  color: #fff;
+  letter-spacing: 12px;
+  color: #fdd786;
   text-transform: uppercase;
   margin-bottom: 16px;
-  text-shadow: 0 4px 24px rgba(0,0,0,0.5);
 }
 
 .heroOverlay p {
@@ -934,9 +933,4 @@
 }
 .menuNavLinks a:hover {
   color: #ff9800;
-}
-
-body {
-  background-color: #FFF9E6;
-  color: #FFFFFF;
 } 
