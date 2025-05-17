@@ -196,6 +196,7 @@ export default function RealFunWave() {
   // Estado para el slide activo
   const [activeSlide, setActiveSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   const toggleAudio = () => {
     setMuted((m) => !m);
@@ -268,13 +269,20 @@ export default function RealFunWave() {
 
   const isLastSlide = activeSlide === slides.length - 1;
 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 600);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       {/* Logo + texto fijo arriba en todos los slides, excepto el último */}
       {!isLastSlide && (
         <div style={{
           position: 'fixed',
-          top: 36,
+          top: isMobile ? 12 : 36,
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 3000,
@@ -284,7 +292,7 @@ export default function RealFunWave() {
           justifyContent: 'center',
           pointerEvents: 'none',
         }}>
-          <LogoWithText color="#fdd786" textColor="#FEC868" size={120} />
+          <LogoWithText color={activeSlide === 0 ? "#fdd786" : "#fff"} textColor={activeSlide === 0 ? "#FEC868" : "#fff"} size={isMobile ? 84 : 120} />
         </div>
       )}
       <div style={{
@@ -349,11 +357,11 @@ export default function RealFunWave() {
                     gap: 32,
                     width: '100%'
                   }}>
-                    <LogoWithText color="#fdd786" textColor="#FEC868" size={140} />
+                    <LogoWithText color="#fdd786" textColor="#FEC868" size={isMobile ? 98 : 140} />
                     <span style={{
                       fontFamily: "'Oswald', Arial, sans-serif",
                       fontWeight: 900,
-                      fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+                      fontSize: isMobile ? 'clamp(2.2rem, 7vw, 4.5rem)' : 'clamp(2.5rem, 8vw, 7rem)',
                       color: '#fff',
                       letterSpacing: '-0.03em',
                       lineHeight: 1.05,
@@ -379,10 +387,10 @@ export default function RealFunWave() {
                       lineHeight: 1.3,
                       margin: 0
                     }}>
-                      Surfcamp en📍Ubatuba, Brasil{"\n"}
+                      <span style={{ color: '#FEC868', fontWeight: 700 }}>#surfcamp</span> en📍Ubatuba, Brasil{"\n"}
                       Aprende a surfear con nosotros{"\n"}
                       Próximo viaje del 23 al 29 de Junio{"\n"}
-            
+                      Dirige @nardonefernando
                     </p>
                     <div style={{ display: 'flex', gap: 32, marginTop: 32 }}>
                       <a href="https://www.instagram.com/realfunwave/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -394,16 +402,15 @@ export default function RealFunWave() {
                       </a>
                       <a href="https://wa.me/message/GWSFFN6YAOGFF1" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                         <svg width="44" height="44" viewBox="0 0 24 24" fill="white">
-                          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.93 9.93 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 17.93c-1.73 0-3.41-.51-4.84-1.47l-.34-.22-3.01.8.8-2.93-.22-.34A8.06 8.06 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm4.13-5.29c-.2-.1-1.18-.58-1.36-.65-.18-.07-.31-.1-.44.1-.13.2-.5.65-.61.78-.11.13-.22.15-.41.05-.2-.1-.84-.31-1.6-.99-.59-.53-.99-1.18-1.11-1.38-.11-.2-.01-.3.09-.4.09-.09.2-.22.3-.33.1-.11.13-.2.2-.33.07-.13.03-.25-.01-.35-.05-.1-.44-1.07-.6-1.47-.16-.39-.32-.34-.44-.35-.11-.01-.25-.01-.39-.01-.13 0-.35.05-.53.25-.18.2-.7.68-.7 1.65s.72 1.92.82 2.05c.1.13 1.41 2.16 3.42 2.95.48.21.85.33 1.14.42.48.15.92.13 1.27.08.39-.06 1.18-.48 1.35-.94.17-.46.17-.85.12-.94-.05-.09-.18-.13-.38-.23z"/>
+                          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.93 9.93 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 17.93c-1.73 0-3.41-.51-4.84-1.47l-.34-.22-3.01.8.8-2.93-.22-.34A8.06 8.06 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm4.13-5.29c-.2-.1-1.18-.58-1.36-.65-.18-.07-.31-.1-.44.1-.13.2-.5.65-.61.78-.11.13-.22.15-.41.05-.2-.1-.84-.31-1.6-.99-.59-.53-.99-1.18-1.11-1.38-.11-.2-.01-.3.09-.4.09-.09.2-.22.3-.33.1-.11.13-.2.2-.33.07-.13.03-.25-.01-.35-.05-.1-.44-1.07-.6-1.47-.16-.39-.32-.34-.44-.35-.11-.01-.25-.01-.39-.01-.13 0-.35.05-.53.25-.18.2-.7.68-.7 1.65s.72 1.92.82 2.05c.1.13 1.41 2.16 3.42 2.95.48.21.85.33 1.14.42.48.15.92.13 1.27.08.39-.06 1.18-.48 1.35-.94.17-.46.17-.85.12-.94-.05-.09-.13-.13-.38-.23z"/>
                         </svg>
                       </a>
                     </div>
-
                   </div>
                 </div>
               ) : (
                 <h1 style={{
-                  fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+                  fontSize: isMobile ? 'clamp(2.2rem, 7vw, 4.5rem)' : 'clamp(2.5rem, 8vw, 7rem)',
                   textAlign: 'center',
                   lineHeight: 1.05,
                   letterSpacing: '-0.03em',
@@ -411,7 +418,11 @@ export default function RealFunWave() {
                   color: idx === 0 ? '#FEC868' : '#fff',
                   marginTop: 18
                 }}>
-                  <AnimatedTitle key={activeSlide === idx ? `active-${idx}` : `inactive-${idx}`} text={slide.title} slideIdx={idx} />
+                  {idx === 0 ? (
+                    <AnimatedTitle key={activeSlide === idx ? `active-${idx}` : `inactive-${idx}`} text={slide.title} slideIdx={idx} />
+                  ) : (
+                    slide.title
+                  )}
                 </h1>
               )}
             </motion.div>
