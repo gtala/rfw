@@ -1,17 +1,18 @@
 import Image from "next/image";
 
 export default function LogoWithText({ color = "#fdd786", textColor = "#fdd786", size = 80 }) {
+  const logoSize = size * 0.7; // Achicar el logo un 30%
   return (
     <div style={{
       display: "flex",
       alignItems: "center",
-      gap: 18
+      gap: 6
     }}>
       <Image
         src="/logo.svg"
         alt="Logo"
-        width={size}
-        height={size}
+        width={logoSize}
+        height={logoSize}
         style={{
           filter: color === "#fff" ? "brightness(0) invert(1)" : "none"
         }}
