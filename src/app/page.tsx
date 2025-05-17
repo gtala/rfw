@@ -97,7 +97,7 @@ function AnimatedTitle({ text }: { text: string }) {
       style={{ display: "inline-block", width: "100%" }}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.7 }}
+      viewport={{ once: false, amount: 0.7 }}
       variants={{
         hidden: {},
         visible: {
@@ -242,7 +242,7 @@ export default function RealFunWave() {
               loop
               playsInline
               preload="auto"
-              style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.5) contrast(1.1)'}}
+              style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.8) contrast(1.1)'}}
             />
             <div className={styles.heroFadeTop}></div>
             <div className={styles.heroFadeBottom}></div>
@@ -250,7 +250,7 @@ export default function RealFunWave() {
               className={styles.heroOverlay}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
+              viewport={{ once: false, amount: 0.7 }}
               transition={{ duration: 1, ease: "easeOut" }}
               style={{zIndex:2}}
             >
