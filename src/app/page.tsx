@@ -1,6 +1,7 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
 import styles from "./realfunwave.module.css";
+import { motion } from "framer-motion";
 
 const cards: any[] = []
 /*[
@@ -61,6 +62,30 @@ const testimonials = [
   {
     name: 'Belu Puigbo',
     text: 'Me anoté sin saber bien de qué se trataba, pero escuché buenas referencias. Siempre fui muy respetuosa del mar y nunca pensé que aprendería a surfear. Sin darme cuenta, estaba lejos de la orilla, animada por la energía del grupo. Superé mis expectativas y miedos. El viaje fue increíble y la experiencia, de las mejores que viví.'
+  }
+];
+
+// Definir slides minimalistas
+const slides = [
+  {
+    title: 'Real Fun Wave',
+    video: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/hero.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9oZXJvLm1wNCIsImlhdCI6MTc0NzI0MzA5NywiZXhwIjoxNzc4Nzc5MDk3fQ.5_W2EEomSJdIinN5o8zXJzwzId60Rl003mcxJnMSFMI'
+  },
+  {
+    title: 'Clases de surf',
+    video: videoCards[0].video
+  },
+  {
+    title: 'Casa Club',
+    video: videoCards[1].video
+  },
+  {
+    title: 'Clase de Yoga',
+    video: videoCards[2].video
+  },
+  {
+    title: 'Comida Gourmet',
+    video: videoCards[3].video
   }
 ];
 
@@ -158,157 +183,59 @@ export default function RealFunWave() {
           </div>
         )}
       </header>
-      <div className={styles.rfwPage}>
-        {/* Hero Section with background video */}
-        <section className={styles.hero}>
-          <div className={styles.heroFadeTop}></div>
-          <video
-            ref={videoRef}
-            className={styles.heroVideo}
-            src="https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/hero.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9oZXJvLm1wNCIsImlhdCI6MTc0NzI0MzA5NywiZXhwIjoxNzc4Nzc5MDk3fQ.5_W2EEomSJdIinN5o8zXJzwzId60Rl003mcxJnMSFMI"
-            autoPlay
-            muted={muted}
-            loop
-            playsInline
-            preload="auto"
-            style={{objectFit:'cover'}}
-          />
-          <div className={styles.heroFadeBottom}></div>
-          {!muted && (
-            <button
-              className={styles.audioBtn}
-              onClick={toggleAudio}
-              aria-label={muted ? "Activar audio" : "Desactivar audio"}
-              type="button"
+      <div style={{
+        height: '100vh',
+        width: '100vw',
+        overflowY: 'scroll',
+        scrollSnapType: 'y mandatory',
+        WebkitOverflowScrolling: 'touch',
+      }}>
+        {slides.map((slide, idx) => (
+          <section
+            key={idx}
+            style={{
+              position: 'relative',
+              width: '100vw',
+              height: '100vh',
+              minHeight: '100vh',
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              scrollSnapAlign: 'start',
+            }}
+          >
+            <video
+              className={styles.heroVideo}
+              src={slide.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.5) contrast(1.1)'}}
+            />
+            <div className={styles.heroFadeTop}></div>
+            <div className={styles.heroFadeBottom}></div>
+            <motion.div
+              className={styles.heroOverlay}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              style={{zIndex:2}}
             >
-              {muted ? "🔇" : "🔊"}
-            </button>
-          )}
-          <div className={styles.heroOverlay}>
-            <h1>Real Fun Wave</h1>
-            <h3 style={{fontWeight:400, marginTop:8, color:'#ff9800', fontSize:'1.25em', letterSpacing:'0.01em'}}>Más que un surftrip: experiencias, comunidad y diversión real</h3>
-          </div>
-          <style jsx>{`
-            @media (max-width: 600px) {
-              .heroOverlay h1 {
-                font-size: 2rem;
-              }
-              .heroOverlay h3 {
-                font-size: 1rem;
-              }
-            }
-          `}</style>
-        </section>
-        {/* Sección QUIÉNES SOMOS */}
-        <section id="quienes" className={styles.aboutSection}>
-          <h2>¿Quiénes somos?</h2>
-          <p>Somos un equipo apasionado por el surf y la aventura, dedicados a crear experiencias únicas en la playa y el mar.</p>
-        </section>
-        {/* Cards visuales */}
-        <section className={styles.cardGrid}>
-          {cards.map((card, i) => (
-            <div className={styles.card} key={i}>
-              <img src={card.img} alt={card.title} className={styles.cardImg} />
-              <div className={styles.cardContent}>
-                <h2>{card.title}</h2>
-                <p>{card.text}</p>
-              </div>
-            </div>
-          ))}
-        </section>
-        {/* Cards de video */}
-        <section className={styles.cardGrid}>
-          {videoCards.map((card, i) => (
-            <div className={styles.card} key={i} onClick={() => openVideoModal(card.video)} style={{cursor:'pointer'}}>
-              <img
-                src={card.thumbnail}
-                alt={card.title}
-                className={styles.cardImg}
-              />
-              <div className={styles.cardContent}>
-                <h2>{card.title}</h2>
-                <p style={{marginBottom: 4, color: '#bbb', fontSize: '0.95em'}}>{card.description}</p>
-              </div>
-            </div>
-          ))}
-        </section>
-        {/* Sección de testimonios con slider */}
-        <section className={styles.testimonialsSection} style={{margin: '48px auto', maxWidth: 700, textAlign: 'center', position:'relative'}}>
-          <h2 style={{color: '#ff9800', marginBottom: 24}}>Testimonios</h2>
-          <div style={{background:'#181818', borderRadius:18, boxShadow:'0 4px 32px rgba(0,0,0,0.18)', padding:'32px 24px', minHeight:180, position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center'}}>
-            {/* Flecha izquierda */}
-            <button onClick={goToPrev} aria-label="Anterior" style={{position:'absolute',left:-32,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',color:'#ff9800',fontSize:22,opacity:0.5,cursor:'pointer',zIndex:2,transition:'opacity 0.2s',padding:0,lineHeight:1}}>&#8592;</button>
-            {/* Flecha derecha */}
-            <button onClick={goToNext} aria-label="Siguiente" style={{position:'absolute',right:-32,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',color:'#ff9800',fontSize:22,opacity:0.5,cursor:'pointer',zIndex:2,transition:'opacity 0.2s',padding:0,lineHeight:1}}>&#8594;</button>
-            <blockquote style={{
-              fontSize:'1.15rem',
-              color:'#f3e9e0',
-              fontStyle:'italic',
-              margin:0,
-              lineHeight:1.5,
-              opacity: fade ? 1 : 0,
-              transition: 'opacity 0.6s',
-              minHeight: 90,
-              width: '100%'
-            }}>
-              “{testimonials[testimonialIndex].text}”
-            </blockquote>
-            <div style={{marginTop:24, color:'#ff9800', fontWeight:700, fontSize:'1.1rem', textAlign:'center'}}>
-              {testimonials[testimonialIndex].name}
-            </div>
-            <div style={{position:'absolute', bottom:16, left:0, right:0, display:'flex', justifyContent:'center', gap:8}}>
-              {testimonials.map((_, idx) => (
-                <span key={idx} style={{width:10, height:10, borderRadius:'50%', background: testimonialIndex===idx ? '#ff9800' : '#444', display:'inline-block', transition:'background 0.2s'}}></span>
-              ))}
-            </div>
-          </div>
-          {/* Responsive: flechas más cerca y pequeñas en mobile */}
-          <style>{`
-            @media (max-width: 700px) {
-              .testimonialsSection button[aria-label="Anterior"] { left: 2px !important; font-size: 16px !important; }
-              .testimonialsSection button[aria-label="Siguiente"] { right: 2px !important; font-size: 16px !important; }
-            }
-          `}</style>
-        </section>
-        {/* Modal de video */}
-        {modalOpen && (
-          <div className={styles.videoModal} onClick={closeModal}>
-            <div className={styles.videoModalContent} onClick={e => e.stopPropagation()}>
-              <video src={modalVideo || undefined} controls autoPlay style={{width:'100%',borderRadius:'16px',background:'#000'}}/>
-              <button className={styles.closeModalBtn} onClick={closeModal} aria-label="Cerrar">✕</button>
-            </div>
-          </div>
-        )}
-        {/* Sección de contacto */}
-        <section id="contacto" className={styles.cardGrid} style={{marginTop:48, marginBottom:32}}>
-          <div className={styles.card} style={{maxWidth:'100%', width:'100%', margin:'0 auto'}}>
-            <h2 style={{textAlign:'center', color:'#ff9800'}}>Contacto</h2>
-            <form className={styles.contactForm} onSubmit={e => e.preventDefault()} style={{marginTop:16}}>
-              <input type="text" name="nombre" placeholder="Nombre" required />
-              <input type="email" name="email" placeholder="Email" required />
-              <textarea name="consulta" placeholder="Tu consulta" rows={4} required />
-              <button type="submit">Enviar</button>
-            </form>
-          </div>
-        </section>
-        {/* Footer con redes sociales */}
-        <footer className={styles.footer}>
-          <div className={styles.socialLinks}>
-            <a href="https://www.instagram.com/realfunwave/" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="6" stroke="#fff" strokeWidth="2"/><circle cx="12" cy="12" r="5" stroke="#fff" strokeWidth="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="#fff"/></svg>
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M16 2v2.5A3.5 3.5 0 0 0 19.5 8H22v3a7 7 0 1 1-7-7h1Z" stroke="#fff" strokeWidth="2"/></svg>
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4" stroke="#fff" strokeWidth="2"/><path d="M10 9.5v5l5-2.5-5-2.5Z" fill="#fff"/></svg>
-            </a>
-          </div>
-        </footer>
-        {/* Botón flotante de WhatsApp */}
-        <a href="https://wa.me/5491112345678" className={styles.whatsappBtn} target="_blank" rel="noopener" aria-label="WhatsApp">
-          <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#25D366"/><path d="M22.5 18.5c-.3-.2-1.8-.9-2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a7.6 7.6 0 0 1-2.2-2.2c-.2-.3 0-.5.1-.7.1-.1.2-.3.3-.5.1-.2 0-.4 0-.6s-.7-1.7-1-2.3c-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5 0-.7.2-.2.2-.8.8-.8 2 0 1.2.8 2.4 1 2.7.2.3 1.6 2.6 4 3.5.6.2 1 .3 1.3.2.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1z" fill="#fff"/></svg>
-        </a>
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.7 }}
+                transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
+              >
+                {slide.title}
+              </motion.h1>
+            </motion.div>
+          </section>
+        ))}
       </div>
     </>
   );
