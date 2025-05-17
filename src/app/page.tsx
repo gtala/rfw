@@ -89,6 +89,40 @@ const slides = [
   }
 ];
 
+// Helper para animar letras
+function AnimatedTitle({ text }: { text: string }) {
+  const letters = text.split("");
+  return (
+    <motion.span
+      style={{ display: "inline-block", width: "100%" }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.7 }}
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: 0.045
+          }
+        }
+      }}
+    >
+      {letters.map((char, i) => (
+        <motion.span
+          key={i}
+          style={{ display: char === " " ? "inline-block" : "inline-block" }}
+          variants={{
+            hidden: { opacity: 0, y: 40 },
+            visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
+          }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+}
+
 export default function RealFunWave() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
@@ -150,39 +184,34 @@ export default function RealFunWave() {
 
   return (
     <>
-      <header className={styles.header}>
-        <div className={styles.logoArea}>
-          {/* Placeholder SVG logo */}
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#fff" strokeWidth="2"/><circle cx="20" cy="20" r="12" stroke="#ff9800" strokeWidth="2"/></svg>
-          <span className={styles.brand}>REAL FUN WAVE</span>
-        </div>
-        {/* Hamburguesa en mobile */}
-        <button className={styles.hamburgerBtn} onClick={() => setMenuOpen(true)} aria-label="Abrir menú" type="button">
-          <span style={{fontSize:28, color:'#fff'}}>☰</span>
-        </button>
-        <nav className={styles.navLinks}>
-          <a href="#quienes">QUIÉNES SOMOS</a>
-          <a href="#experiencia">EXPERIENCIA</a>
-          <a href="#viajes">PRÓXIMOS VIAJES</a>
-          <a href="#testimonios">TESTIMONIOS</a>
-          <a href="#contacto">CONTACTO</a>
-        </nav>
-        {/* Menú lateral hamburguesa */}
-        {menuOpen && (
-          <div className={styles.menuOverlay} onClick={() => setMenuOpen(false)}>
-            <div className={styles.menuDrawer} onClick={e => e.stopPropagation()}>
-              <button className={styles.closeMenuBtn} onClick={() => setMenuOpen(false)} aria-label="Cerrar menú">✕</button>
-              <nav className={styles.menuNavLinks}>
-                <a href="#quienes" onClick={() => setMenuOpen(false)}>QUIÉNES SOMOS</a>
-                <a href="#experiencia" onClick={() => setMenuOpen(false)}>EXPERIENCIA</a>
-                <a href="#viajes" onClick={() => setMenuOpen(false)}>PRÓXIMOS VIAJES</a>
-                <a href="#testimonios" onClick={() => setMenuOpen(false)}>TESTIMONIOS</a>
-                <a href="#contacto" onClick={() => setMenuOpen(false)}>CONTACTO</a>
-              </nav>
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Menú hamburguesa animado */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0.7, x: 40 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ duration: 1, type: 'spring', bounce: 0.4, delay: 0.3 }}
+        style={{
+          position: 'fixed',
+          top: 32,
+          right: 32,
+          zIndex: 1001,
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+          width: 48,
+          height: 48,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        aria-label="Abrir menú"
+      >
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <rect y="8" width="38" height="4" rx="2" fill="#111" />
+          <rect y="17" width="38" height="4" rx="2" fill="#111" />
+          <rect y="26" width="38" height="4" rx="2" fill="#111" />
+        </svg>
+      </motion.button>
       <div style={{
         height: '100vh',
         width: '100vw',
@@ -225,14 +254,15 @@ export default function RealFunWave() {
               transition={{ duration: 1, ease: "easeOut" }}
               style={{zIndex:2}}
             >
-              <motion.h1
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
-              >
-                {slide.title}
-              </motion.h1>
+              <h1 style={{
+                fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+                textAlign: 'center',
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                fontWeight: 900
+              }}>
+                <AnimatedTitle text={slide.title} />
+              </h1>
             </motion.div>
           </section>
         ))}
