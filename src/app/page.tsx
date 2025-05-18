@@ -490,7 +490,16 @@ export default function RealFunWave() {
             {/* Botón para abrir el video, ahora al final y con z-index alto */}
             {!slide.imageOnly && slide.video && (
               <button
-                onClick={() => router.push(`/video?src=${encodeURIComponent(slide.video)}`)}
+                onClick={() => {
+                  setModalVideo(slide.video);
+                  setModalOpen(true);
+                  setTimeout(() => {
+                    const videoEl = document.getElementById('modal-video');
+                    if (videoEl && videoEl.requestFullscreen) {
+                      videoEl.requestFullscreen().catch(() => {});
+                    }
+                  }, 100);
+                }}
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -547,10 +556,12 @@ export default function RealFunWave() {
             ×
           </button>
           <video
+            id="modal-video"
             ref={videoRef}
             src={modalVideo}
             controls
             playsInline
+            autoPlay
             muted
             style={{
               maxWidth: '100vw',
@@ -562,6 +573,7 @@ export default function RealFunWave() {
               objectFit: 'contain',
               background: '#000',
               zIndex: 5001,
+              display: 'block',
             }}
             onError={(e) => console.error('Modal video error:', e)}
             onClick={e => e.stopPropagation()}
