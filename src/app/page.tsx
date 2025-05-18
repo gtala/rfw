@@ -7,6 +7,7 @@ import LogoWithText from '../components/LogoWithText';
 import { videoCards } from '../data/videoCards';
 import { testimonials } from '../data/testimonials';
 import { slides } from '../data/slides';
+import { useRouter } from 'next/navigation';
 
 function AnimatedTitle({ text, slideIdx }: { text: string, slideIdx: number }) {
   if (slideIdx === 0) {
@@ -121,6 +122,7 @@ export default function RealFunWave() {
   const [splashVisible, setSplashVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
   const [videoUnmuted, setVideoUnmuted] = useState(false);
+  const router = useRouter();
 
   const toggleAudio = () => {
     setMuted((m) => !m);
@@ -373,21 +375,6 @@ export default function RealFunWave() {
                   }}
                   onError={(e) => console.error('Video error:', e)}
                 />
-                <button
-                  onClick={() => openVideoModal(slide.video)}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    zIndex: 2,
-                    background: 'rgba(0,0,0,0)',
-                    border: 'none',
-                    cursor: 'pointer'
-                  }}
-                  aria-label="Ver video en pantalla completa"
-                />
               </>
             )}
             <div className={styles.heroFadeTop}></div>
@@ -500,10 +487,29 @@ export default function RealFunWave() {
                 </h1>
               )}
             </motion.div>
+            {/* Botón para abrir el video, ahora al final y con z-index alto */}
+            {!slide.imageOnly && slide.video && (
+              <button
+                onClick={() => router.push(`/video?src=${encodeURIComponent(slide.video)}`)}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100vw',
+                  height: '100vh',
+                  zIndex: 50,
+                  background: 'rgba(0,0,0,0)',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+                aria-label="Ver video en pantalla completa"
+              />
+            )}
           </section>
         ))}
       </div>
 
+      {/* Video Modal Fullscreen */}
       {modalOpen && modalVideo && (
         <div
           style={{
@@ -560,25 +566,15 @@ export default function RealFunWave() {
             onError={(e) => console.error('Modal video error:', e)}
             onClick={e => e.stopPropagation()}
           />
-          <button
-            onClick={toggleAudio}
-            style={{
-              position: 'absolute',
-              bottom: 24,
-              right: 32,
-              zIndex: 5100,
-              background: 'rgba(0,0,0,0.5)',
-              border: 'none',
-              color: '#fff',
-              fontSize: 24,
-              cursor: 'pointer',
-              padding: 8,
-              borderRadius: 4,
-            }}
-            aria-label={videoUnmuted ? 'Silenciar video' : 'Activar sonido'}
-          >
-            {videoUnmuted ? '🔊' : '🔇'}
-          </button>
+          <div style={{
+            color: '#fff',
+            fontSize: 18,
+            marginTop: 16,
+            textAlign: 'center'
+          }}>
+            Toca el botón de play para reproducir el video<br />
+            (esto es obligatorio en iPhone/iPad)
+          </div>
         </div>
       )}
     </>
