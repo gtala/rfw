@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "../components/LogoWithText";
 import LogoWithText from "../components/LogoWithText";
 
-const cards: any[] = []
-
 
 const videoCards = [
    {
@@ -35,7 +33,6 @@ const videoCards = [
   }
 ];
 
-// Resúmenes de testimonios
 const testimonials = [
   {
     name: 'Guido RFW',
@@ -342,8 +339,8 @@ export default function RealFunWave() {
               animate={{ rotate: 1440 }}
               transition={{
                 rotate: {
-                  duration: 3,
-                  ease: [0.7, 0, 1, 1], // solo acelera
+                  duration: 4,
+                  ease: [0.3, 0, 1, 1], // aceleración más rápida
                 }
               }}
               style={{
@@ -403,8 +400,8 @@ export default function RealFunWave() {
             style={{
               position: 'relative',
               width: '100vw',
-              height: '100vh',
               minHeight: '100vh',
+              height: 'auto',
               overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
@@ -504,13 +501,24 @@ export default function RealFunWave() {
                 </div>
               ) : (
                 <h1 style={{
-                  fontSize: isMobile ? 'clamp(2.2rem, 7vw, 4.5rem)' : 'clamp(2.5rem, 8vw, 7rem)',
+                  fontSize: isMobile
+                    ? 'clamp(2.5rem, 16vw, 5.2rem)'
+                    : 'clamp(3.5rem, 13vw, 8.5rem)',
                   textAlign: 'center',
                   lineHeight: 1.05,
                   letterSpacing: '-0.03em',
                   fontWeight: 900,
                   color: idx === 0 ? '#FEC868' : '#fff',
-                  marginTop: 18
+                  marginTop: 18,
+                  textTransform: 'uppercase',
+                  width: '100vw',
+                  maxWidth: '100vw',
+                  overflowWrap: 'break-word',
+                  wordBreak: 'break-word',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  paddingLeft: isMobile ? 8 : 0,
+                  paddingRight: isMobile ? 8 : 0,
                 }}>
                   {idx === 0 ? (
                     showTitle ? (
