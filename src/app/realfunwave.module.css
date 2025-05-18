@@ -65,15 +65,16 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 40px 16px 24px 16px;
-  background: rgba(24, 24, 24, 0.92);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   margin-top: 40px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
 }
 
 .about h2, .experiences h2, .testimonials h2, .cta h2 {
   font-size: 2rem;
-  color: #ff9800;
+  color: #FEC868;
   margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -97,12 +98,12 @@
 
 .testimonials blockquote {
   font-style: italic;
-  background: rgba(255, 152, 0, 0.08);
-  border-left: 4px solid #ff9800;
+  background: rgba(254, 200, 104, 0.1);
+  border-left: 4px solid #FEC868;
   margin: 12px 0;
   padding: 12px 18px;
   border-radius: 8px;
-  color: #fff3e0;
+  color: #fff;
 }
 
 .cta {
@@ -113,22 +114,22 @@
 .ctaBtn {
   display: inline-block;
   margin-top: 18px;
-  background: linear-gradient(90deg, #ff9800 60%, #ff5722 100%);
-  color: #fff;
+  background: linear-gradient(90deg, #FEC868 60%, #fdd786 100%);
+  color: #111;
   font-size: 1.2rem;
   font-weight: 700;
   padding: 14px 36px;
   border: none;
   border-radius: 32px;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.18);
+  box-shadow: 0 4px 16px rgba(254, 200, 104, 0.2);
   transition: background 0.2s, transform 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
 
 .ctaBtn:hover {
-  background: linear-gradient(90deg, #ff5722 60%, #ff9800 100%);
+  background: linear-gradient(90deg, #fdd786 60%, #FEC868 100%);
   transform: translateY(-2px) scale(1.03);
 }
 
@@ -418,19 +419,23 @@
 }
 
 .card {
-  background: rgba(24, 24, 24, 0.98);
-  border-radius: 24px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
   overflow: hidden;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.18s, box-shadow 0.18s;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
+
 .card:hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.28);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
+
 .cardImg {
   width: 100%;
   height: 210px;
@@ -439,26 +444,28 @@
   border-top-right-radius: 24px;
   display: block;
 }
+
 .cardContent {
   padding: 28px 22px 22px 22px;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
+
 .cardContent h2 {
-  color: #ff9800;
-  font-size: 1.18rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin: 0 0 6px 0;
+  color: #FEC868;
+  font-size: 1.4rem;
   font-weight: 700;
+  margin-bottom: 8px;
 }
+
 .cardContent p {
-  color: #e0e0e0;
-  font-size: 1.05rem;
-  letter-spacing: 0.03em;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.5;
   margin: 0;
 }
+
 @media (max-width: 900px) {
   .cardGrid {
     gap: 18px;
@@ -468,6 +475,7 @@
     max-width: 370px;
   }
 }
+
 @media (max-width: 600px) {
   .cardGrid {
     flex-direction: column;
@@ -491,28 +499,31 @@
 }
 
 .aboutSection {
-  background: rgba(24, 24, 24, 0.98);
-  border-radius: 22px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-  padding: 38px 24px 28px 24px;
-  margin: 48px auto 0 auto;
-  max-width: 700px;
-  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 40px 24px;
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 800px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
 }
+
 .aboutSection h2 {
-  color: #ff9800;
-  font-size: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 12px;
+  color: #FEC868;
+  font-size: 2rem;
   font-weight: 700;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
+
 .aboutSection p {
-  color: #e0e0e0;
-  font-size: 1.08rem;
-  letter-spacing: 0.03em;
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1.6;
   margin: 0;
 }
+
 @media (max-width: 600px) {
   .aboutSection {
     padding: 18px 8px 14px 8px;
@@ -536,6 +547,7 @@
   background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent);
   z-index: 2;
 }
+
 .heroFadeBottom {
   position: absolute;
   bottom: 0;
@@ -545,84 +557,96 @@
   background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
   z-index: 2;
 }
+
 .contactSection {
-  background: rgba(24, 24, 24, 0.98);
-  border-radius: 22px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-  padding: 38px 24px 28px 24px;
-  margin: 48px auto 0 auto;
-  max-width: 700px;
-  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 40px 24px;
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 800px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
 }
+
 .contactSection h2 {
-  color: #ff9800;
-  font-size: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 18px;
+  color: #FEC868;
+  font-size: 2rem;
   font-weight: 700;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
+
 .contactForm {
   display: flex;
   flex-direction: column;
   gap: 18px;
   align-items: center;
 }
+
 .contactForm input,
 .contactForm textarea {
-  width: 100%;
-  max-width: none;
-  background: #181818;
-  border: 1.5px solid #333;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(254, 200, 104, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
   color: #fff;
   font-size: 1rem;
-  padding: 12px 14px;
-  outline: none;
-  transition: border 0.18s;
+  width: 100%;
+  margin-bottom: 16px;
+  transition: border 0.3s ease;
 }
+
 .contactForm input:focus,
 .contactForm textarea:focus {
-  border: 1.5px solid #ff9800;
+  border: 1.5px solid #FEC868;
+  outline: none;
 }
+
 .contactForm button {
-  background: linear-gradient(90deg, #ff9800 60%, #ff5722 100%);
-  color: #fff;
-  border: none;
-  border-radius: 22px;
-  padding: 12px 38px;
+  background: linear-gradient(90deg, #FEC868 60%, #fdd786 100%);
+  color: #111;
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 24px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.12);
-  transition: background 0.18s, transform 0.18s;
+  transition: background 0.3s ease, transform 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
+
 .contactForm button:hover {
-  background: linear-gradient(90deg, #ff5722 60%, #ff9800 100%);
+  background: linear-gradient(90deg, #fdd786 60%, #FEC868 100%);
   transform: scale(1.04);
 }
+
 .footer {
-  background: #111;
-  padding: 32px 0 18px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 48px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 24px 0;
+  margin-top: 40px;
+  text-align: center;
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.3);
 }
+
 .socialLinks {
   display: flex;
   gap: 32px;
 }
+
 .socialLinks a {
   opacity: 0.7;
   transition: opacity 0.18s, transform 0.18s;
 }
+
 .socialLinks a:hover {
   opacity: 1;
   transform: scale(1.12);
 }
+
 .whatsappBtn {
   position: fixed;
   bottom: 32px;
@@ -639,9 +663,11 @@
   align-items: center;
   justify-content: center;
 }
+
 .whatsappBtn:hover {
   transform: scale(1.08);
 }
+
 @media (max-width: 600px) {
   .footer {
     padding: 18px 0 10px 0;
@@ -810,6 +836,7 @@
   justify-content: center;
   transition: background 0.18s, color 0.18s;
 }
+
 .closeModalBtn:hover {
   background: #ff9800;
   color: #fff;
@@ -874,9 +901,11 @@
     padding: 8px;
   }
 }
+
 .hamburgerBtn {
   display: none;
 }
+
 .menuOverlay {
   position: fixed;
   top: 0;
@@ -889,6 +918,7 @@
   align-items: stretch;
   justify-content: flex-start;
 }
+
 .menuDrawer {
   width: 80vw;
   max-width: 320px;
@@ -901,10 +931,12 @@
   position: relative;
   animation: slideInMenu 0.22s cubic-bezier(.7,.2,.3,1);
 }
+
 @keyframes slideInMenu {
   from { transform: translateX(-100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+
 .closeMenuBtn {
   position: absolute;
   top: 18px;
@@ -916,21 +948,23 @@
   cursor: pointer;
   z-index: 10;
 }
+
 .menuNavLinks {
   display: flex;
   flex-direction: column;
   gap: 28px;
   margin-top: 48px;
 }
+
 .menuNavLinks a {
   color: #fff;
-  font-size: 1.25rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 700;
   text-decoration: none;
-  transition: color 0.18s;
+  padding: 12px 0;
+  transition: color 0.3s ease;
 }
+
 .menuNavLinks a:hover {
-  color: #ff9800;
+  color: #FEC868;
 } 

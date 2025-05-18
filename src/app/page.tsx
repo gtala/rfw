@@ -1,7 +1,8 @@
 'use client';
 import { useRef, useState, useEffect } from "react";
 import styles from "./realfunwave.module.css";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { Logo } from "../components/LogoWithText";
 import LogoWithText from "../components/LogoWithText";
 
 const cards: any[] = []
@@ -197,6 +198,8 @@ export default function RealFunWave() {
   const [activeSlide, setActiveSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [splashVisible, setSplashVisible] = useState(true);
+  const [showTitle, setShowTitle] = useState(false);
 
   const toggleAudio = () => {
     setMuted((m) => !m);
@@ -276,24 +279,115 @@ export default function RealFunWave() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    // First show splash for 1 second (spin duration)
+    const splashTimer = setTimeout(() => {
+      setSplashVisible(false);
+      // Show both header and title after splash exit animation is complete
+      const headerTimer = setTimeout(() => {
+        setShowTitle(true);
+      }, 1500); // Wait for splash exit animation
+      return () => clearTimeout(headerTimer);
+    }, 1000);
+    return () => clearTimeout(splashTimer);
+  }, []);
+
   return (
     <>
+      <AnimatePresence mode="wait">
+        {splashVisible && (
+          <motion.div
+            initial={{
+              opacity: 1,
+              scale: 1,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+            transition={{
+              opacity: { duration: 0.5 },
+              scale: { duration: 1.5, ease: 'easeInOut' },
+              top: { duration: 1.5, ease: 'easeInOut' },
+              left: { duration: 1.5, ease: 'easeInOut' },
+              transform: { duration: 1.5, ease: 'easeInOut' }
+            }}
+            exit={{
+              opacity: 0,
+              scale: (isMobile ? 84 : 120) / (isMobile ? 200 : 360),
+              top: isMobile ? 12 : 36,
+              left: '50%',
+              transform: 'translate(-50%, 0%)',
+              transition: { duration: 1.5, ease: 'easeInOut' }
+            }}
+            style={{
+              position: 'fixed',
+              zIndex: 4000,
+              width: isMobile ? 200 : 360,
+              height: isMobile ? 200 : 360,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}
+          >
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 1440 }}
+              transition={{
+                rotate: {
+                  duration: 3,
+                  ease: [0.7, 0, 1, 1], // solo acelera
+                }
+              }}
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Logo 
+                size={isMobile ? 200 : 360} 
+                color="#fdd786"
+                style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Logo + texto fijo arriba en todos los slides, excepto el último */}
-      {!isLastSlide && (
-        <div style={{
-          position: 'fixed',
-          top: isMobile ? 12 : 36,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 3000,
-          width: 'auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
-        }}>
-          <LogoWithText color={activeSlide === 0 ? "#fdd786" : "#fff"} textColor={activeSlide === 0 ? "#FEC868" : "#fff"} size={isMobile ? 84 : 120} />
-        </div>
+      {!isLastSlide && showTitle && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          style={{
+            position: 'fixed',
+            top: isMobile ? 12 : 36,
+            left: 0,
+            width: '100vw',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 3000,
+            pointerEvents: 'none',
+          }}
+        >
+          <LogoWithText 
+            color={activeSlide === 0 ? "#fdd786" : "#fff"} 
+            textColor={activeSlide === 0 ? "#FEC868" : "#fff"} 
+            size={isMobile ? 84 : 120} 
+          />
+        </motion.div>
       )}
       <div style={{
         height: '100vh',
@@ -357,7 +451,7 @@ export default function RealFunWave() {
                     gap: 32,
                     width: '100%'
                   }}>
-                    <LogoWithText color="#fdd786" textColor="#FEC868" size={isMobile ? 98 : 140} />
+                    <Logo color="#fdd786" size={isMobile ? 98 : 140} />
                     <span style={{
                       fontFamily: "'Oswald', Arial, sans-serif",
                       fontWeight: 900,
@@ -419,7 +513,9 @@ export default function RealFunWave() {
                   marginTop: 18
                 }}>
                   {idx === 0 ? (
-                    <AnimatedTitle key={activeSlide === idx ? `active-${idx}` : `inactive-${idx}`} text={slide.title} slideIdx={idx} />
+                    showTitle ? (
+                      <AnimatedTitle key={activeSlide === idx ? `active-${idx}` : `inactive-${idx}`} text={slide.title} slideIdx={idx} />
+                    ) : null
                   ) : (
                     slide.title
                   )}
