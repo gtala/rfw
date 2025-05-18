@@ -230,8 +230,13 @@ export default function RealFunWave() {
   }, []);
 
   useEffect(() => {
-    // No programmatic play for iOS compatibility
-  }, [modalOpen, modalVideo, videoUnmuted]);
+    if (modalOpen && modalVideo && videoRef.current) {
+      // Intentar desmutear y reproducir con audio
+      videoRef.current.muted = false;
+      videoRef.current.volume = 1;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [modalOpen, modalVideo]);
 
   return (
     <>
@@ -493,12 +498,6 @@ export default function RealFunWave() {
                 onClick={() => {
                   setModalVideo(slide.video);
                   setModalOpen(true);
-                  setTimeout(() => {
-                    const videoEl = document.getElementById('modal-video');
-                    if (videoEl && videoEl.requestFullscreen) {
-                      videoEl.requestFullscreen().catch(() => {});
-                    }
-                  }, 100);
                 }}
                 style={{
                   position: 'absolute',
@@ -562,7 +561,6 @@ export default function RealFunWave() {
             controls
             playsInline
             autoPlay
-            muted
             style={{
               maxWidth: '100vw',
               maxHeight: '100vh',
