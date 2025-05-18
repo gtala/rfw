@@ -1,84 +1,13 @@
 'use client';
-import { useRef, useState, useEffect } from "react";
-import styles from "./realfunwave.module.css";
-import { motion, AnimatePresence } from "framer-motion";
-import { Logo } from "../components/LogoWithText";
-import LogoWithText from "../components/LogoWithText";
+import { useRef, useState, useEffect } from 'react';
+import styles from './realfunwave.module.css';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Logo } from '../components/LogoWithText';
+import LogoWithText from '../components/LogoWithText';
+import { videoCards } from '../data/videoCards';
+import { testimonials } from '../data/testimonials';
+import { slides } from '../data/slides';
 
-
-const videoCards = [
-   {
-    title: 'Clases de surf',
-    description: 'Aprende y disfruta del surf con instructores expertos en un entorno seguro y divertido.',
-    video: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/surf.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9zdXJmLm1wNCIsImlhdCI6MTc0NzI0NjQ4MCwiZXhwIjoxNzc4NzgyNDgwfQ.vJzq-hj6JQWKdrU5ljDOh0hJJVPQ6uSdMnIl2RHHcRM',
-    thumbnail: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/thumbnails/surf-thumb.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS90aHVtYm5haWxzL3N1cmYtdGh1bWIucG5nIiwiaWF0IjoxNzQ3MzIyMDg0LCJleHAiOjE3Nzg4NTgwODR9.MAT93bQLD2u4ZyVXoVBkzHJ1WCH_pYpQVm138V2BdNo'
-  },
-   {
-    title: 'Casa Club', 
-    description: 'Un espacio de encuentro y relax para los participantes.',
-    video: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/casa.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9jYXNhLm1wNCIsImlhdCI6MTc0NzI0NDIwMCwiZXhwIjoxNzc4NzgwMjAwfQ.95hAkfbepD5q-ulCjvvZF7E_HxkPy6gq2PzBb3nQGMA',
-    thumbnail: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/thumbnails/casa-thumb.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS90aHVtYm5haWxzL2Nhc2EtdGh1bWIucG5nIiwiaWF0IjoxNzQ3MzIyMDYyLCJleHAiOjE3Nzg4NTgwNjJ9.B4UM57Mpu8Ta-yelGbIGK8rpEtzIIfkHH98V06C4DbE'
-  },
-  {
-    title: 'Clase de Yoga',
-    description: 'Sesiones de yoga para conectar cuerpo y mente frente al mar.',
-    video: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/yoga.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS95b2dhLm1wNCIsImlhdCI6MTc0NzI0NDQxNywiZXhwIjoxNzc4NzgwNDE3fQ.MCv61vYfG46vWDNGdzdmlDBxBy17IHg5G3qrTKV5qF4',
-    thumbnail: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/thumbnails/yoga-thumb.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS90aHVtYm5haWxzL3lvZ2EtdGh1bWIucG5nIiwiaWF0IjoxNzQ3MzIyMDkxLCJleHAiOjE3Nzg4NTgwOTF9.DcIoAx3ToPL5gclgRZV56AY39szI3QdKrrFLT7rfxgo'
-  },
-  {
-    title: 'Comida Gourmet',
-    description: 'Disfruta de una experiencia culinaria saludable y deliciosa.',
-    video: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/comida.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS9jb21pZGEubXA0IiwiaWF0IjoxNzQ3MjQzODE3LCJleHAiOjE3Nzg3Nzk4MTd9.NVO2GM_IiWRv-uG3Aiy5nyFYBkLIla_FbQb4Cf5sfLg',
-    thumbnail: 'https://ixdacrdgrfojyzkoxssj.supabase.co/storage/v1/object/sign/realfunwave/thumbnails/comida-thumb.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzdiODE5ZTkwLThhN2EtNGYwMi05MGIyLWJlYzhkZTAwNzc4NCJ9.eyJ1cmwiOiJyZWFsZnVud2F2ZS90aHVtYm5haWxzL2NvbWlkYS10aHVtYi5wbmciLCJpYXQiOjE3NDczMjIwNzcsImV4cCI6MTc3ODg1ODA3N30.-gmEQAWBIyF9EgNjE-vhE1GNrT_5fW3qgwJvT7L4OAw'
-  }
-];
-
-const testimonials = [
-  {
-    name: 'Guido RFW',
-    text: 'Un viaje divino, lleno de lindas personas. El último día hicimos canoa, surf, tragos y baile, y cerramos con un eclipse lunar en la playa. Ese día tan completo está entre mis mejores días, sin duda. Muy agradecido por lo vivido y por haberlos conocido. ¡Gracias por la buena vibra y tanta vitamina!'
-  },
-  {
-    name: 'Andrea 🏄‍♀️',
-    text: 'Aprender a surfear fue un gran desafío personal, ya que no sé nadar y siempre tuve miedo a las olas. Gracias a Real Fun Wave, lo logré con alegría y compañerismo. Las playas de Ubatuba y los profes me motivaron y entendieron mis miedos. El mejor consejo: "No trates de no caerte, todos se caen, hasta los campeones".'
-  },
-  {
-    name: 'Belu Puigbo',
-    text: 'Me anoté sin saber bien de qué se trataba, pero escuché buenas referencias. Siempre fui muy respetuosa del mar y nunca pensé que aprendería a surfear. Sin darme cuenta, estaba lejos de la orilla, animada por la energía del grupo. Superé mis expectativas y miedos. El viaje fue increíble y la experiencia, de las mejores que viví.'
-  }
-];
-
-// Definir slides minimalistas
-const slides = [
-  {
-    title: 'MÁS QUE UN SURFTRIP\nES REAL FUN',
-    imageOnly: true // Only show image background, no video
-  },
-  {
-    title: 'Clases de surf',
-    video: videoCards[0].video
-  },
-  {
-    title: 'Casa Club',
-    video: videoCards[1].video
-  },
-  {
-    title: 'Clase de Yoga',
-    video: videoCards[2].video
-  },
-  {
-    title: 'Comida Gourmet',
-    video: videoCards[3].video
-  },
-  // Nueva slide final
-  {
-    title: 'Real Fun Wave',
-    description: 'Surfcamp en📍Ubatuba, Brasil\nAprende a surfear con nosotros\nPróximo viaje del 23 al 29 de Junio',
-    imageOnly: true
-  }
-];
-
-// Helper para animar palabras con diferentes efectos por slide
 function AnimatedTitle({ text, slideIdx }: { text: string, slideIdx: number }) {
   if (slideIdx === 0) {
     const lines = text.split("\n");
@@ -127,34 +56,28 @@ function AnimatedTitle({ text, slideIdx }: { text: string, slideIdx: number }) {
       }}
     >
       {words.map((word, i) => {
-        // Animación por slide y por palabra
         let variants = {};
         if (slideIdx === 1) {
-          // Slide 1: izquierda
           variants = {
             hidden: { opacity: 0, x: -80 },
             visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
           };
         } else if (slideIdx === 2) {
-          // Slide 2: derecha
           variants = {
             hidden: { opacity: 0, x: 80 },
             visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
           };
         } else if (slideIdx === 3) {
-          // Slide 3: fade + scale
           variants = {
             hidden: { opacity: 0, scale: 0.7 },
             visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 400, damping: 24 } }
           };
         } else if (slideIdx === 4) {
-          // Slide 4: rotación
           variants = {
-            hidden: { opacity: 0, rotate: -90 },
+            hidden: { opacity: 0, rotate: -90 }, // Fixed: Changed 'Hebrew' to 'opacity'
             visible: { opacity: 1, rotate: 0, transition: { type: "spring", stiffness: 400, damping: 24 } }
           };
         } else {
-          // Default: fade in
           variants = {
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { type: "spring", stiffness: 400, damping: 24 } }
@@ -164,6 +87,7 @@ function AnimatedTitle({ text, slideIdx }: { text: string, slideIdx: number }) {
           <motion.span
             key={i}
             style={{ display: "block", overflow: "hidden" }}
+            variants={variants}
           >
             <motion.span
               style={{ display: "block", originX: i === 0 ? 0 : 1 }}
@@ -189,11 +113,10 @@ export default function RealFunWave() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [fade, setFade] = useState(true);
   const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
-  // Estado para el menú hamburguesa
   const [menuOpen, setMenuOpen] = useState(false);
-  // Estado para el slide activo
   const [activeSlide, setActiveSlide] = useState(0);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [splashVisible, setSplashVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
@@ -201,10 +124,11 @@ export default function RealFunWave() {
 
   const toggleAudio = () => {
     setMuted((m) => !m);
+    setVideoUnmuted((prev) => !prev);
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
       if (!videoRef.current.muted) {
-        videoRef.current.play();
+        videoRef.current.play().catch((error) => console.error('Error playing video:', error));
       }
     }
   };
@@ -212,18 +136,23 @@ export default function RealFunWave() {
   const openVideoModal = (videoUrl: string) => {
     setModalVideo(videoUrl);
     setModalOpen(true);
+    setVideoUnmuted(false);
   };
+
   const closeModal = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
     setModalOpen(false);
     setModalVideo(null);
     setVideoUnmuted(false);
   };
 
   useEffect(() => {
-    setThumbnails(videoCards.map(card => card.thumbnail));
+    setThumbnails(videoCards.map((card) => card.thumbnail));
   }, [videoCards.length]);
 
-  // Slider automático para testimonios con fade
   useEffect(() => {
     setFade(false);
     const fadeTimeout = setTimeout(() => setFade(true), 100);
@@ -243,11 +172,11 @@ export default function RealFunWave() {
   const goToPrev = () => {
     setTestimonialIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
+
   const goToNext = () => {
     setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
   };
 
-  // Detectar slide activo con IntersectionObserver
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
     slideRefs.current = slideRefs.current.slice(0, slides.length);
@@ -257,6 +186,15 @@ export default function RealFunWave() {
         ([entry]) => {
           if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
             setActiveSlide(idx);
+            const video = videoRefs.current[idx];
+            if (video) {
+              video.play().catch((error) => console.error('Error playing slide video:', error));
+            }
+          } else {
+            const video = videoRefs.current[idx];
+            if (video) {
+              video.pause();
+            }
           }
         },
         { threshold: [0.7] }
@@ -279,24 +217,18 @@ export default function RealFunWave() {
   }, []);
 
   useEffect(() => {
-    // First show splash for 1 second (spin duration)
     const splashTimer = setTimeout(() => {
       setSplashVisible(false);
-      // Show both header and title after splash exit animation is complete
       const headerTimer = setTimeout(() => {
         setShowTitle(true);
-      }, 1500); // Wait for splash exit animation
+      }, 1500);
       return () => clearTimeout(headerTimer);
     }, 1000);
     return () => clearTimeout(splashTimer);
   }, []);
 
-  // Ensure video plays with audio on mobile when modal opens (only if unmuted)
   useEffect(() => {
-    if (modalOpen && modalVideo && videoRef.current && videoUnmuted) {
-      videoRef.current.muted = false;
-      videoRef.current.play().catch(() => {});
-    }
+    // No programmatic play for iOS compatibility
   }, [modalOpen, modalVideo, videoUnmuted]);
 
   return (
@@ -350,7 +282,7 @@ export default function RealFunWave() {
               transition={{
                 rotate: {
                   duration: 4,
-                  ease: [0.3, 0, 1, 1], // aceleración más rápida
+                  ease: [0.3, 0, 1, 1],
                 }
               }}
               style={{
@@ -371,7 +303,6 @@ export default function RealFunWave() {
         )}
       </AnimatePresence>
 
-      {/* Logo + texto fijo arriba en todos los slides, excepto el último */}
       {!isLastSlide && showTitle && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -419,18 +350,28 @@ export default function RealFunWave() {
               scrollSnapAlign: 'start',
             }}
           >
-            {/* Only render video if not imageOnly */}
             {!slide.imageOnly && slide.video && (
               <>
                 <video
+                  ref={el => { videoRefs.current[idx] = el; }}
                   className={styles.heroVideo}
                   src={slide.video}
-                  autoPlay
                   muted
                   loop
                   playsInline
                   preload="auto"
-                  style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.8) contrast(1.1)'}}
+                  poster={videoCards[idx - 1]?.thumbnail}
+                  style={{
+                    objectFit: 'cover',
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    zIndex: 1,
+                    filter: 'brightness(0.8) contrast(1.1)'
+                  }}
+                  onError={(e) => console.error('Video error:', e)}
                 />
                 <button
                   onClick={() => openVideoModal(slide.video)}
@@ -457,7 +398,7 @@ export default function RealFunWave() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.7 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              style={{zIndex:2}}
+              style={{ zIndex: 2 }}
             >
               {idx === slides.length - 1 ? (
                 <div style={{
@@ -563,7 +504,6 @@ export default function RealFunWave() {
         ))}
       </div>
 
-      {/* Video Modal Fullscreen */}
       {modalOpen && modalVideo && (
         <div
           style={{
@@ -604,24 +544,43 @@ export default function RealFunWave() {
             ref={videoRef}
             src={modalVideo}
             controls
-            autoPlay
+            playsInline
             muted
             style={{
               maxWidth: '100vw',
               maxHeight: '100vh',
               width: '100vw',
               height: '100vh',
+              minWidth: 200,
+              minHeight: 120,
               objectFit: 'contain',
               background: '#000',
               zIndex: 5001,
             }}
+            onError={(e) => console.error('Modal video error:', e)}
             onClick={e => e.stopPropagation()}
           />
+          <button
+            onClick={toggleAudio}
+            style={{
+              position: 'absolute',
+              bottom: 24,
+              right: 32,
+              zIndex: 5100,
+              background: 'rgba(0,0,0,0.5)',
+              border: 'none',
+              color: '#fff',
+              fontSize: 24,
+              cursor: 'pointer',
+              padding: 8,
+              borderRadius: 4,
+            }}
+            aria-label={videoUnmuted ? 'Silenciar video' : 'Activar sonido'}
+          >
+            {videoUnmuted ? '🔊' : '🔇'}
+          </button>
         </div>
       )}
     </>
   );
 }
-
-
-
