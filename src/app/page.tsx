@@ -197,6 +197,7 @@ export default function RealFunWave() {
   const [isMobile, setIsMobile] = useState(false);
   const [splashVisible, setSplashVisible] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
+  const [videoUnmuted, setVideoUnmuted] = useState(false);
 
   const toggleAudio = () => {
     setMuted((m) => !m);
@@ -215,6 +216,7 @@ export default function RealFunWave() {
   const closeModal = () => {
     setModalOpen(false);
     setModalVideo(null);
+    setVideoUnmuted(false);
   };
 
   useEffect(() => {
@@ -288,6 +290,14 @@ export default function RealFunWave() {
     }, 1000);
     return () => clearTimeout(splashTimer);
   }, []);
+
+  // Ensure video plays with audio on mobile when modal opens (only if unmuted)
+  useEffect(() => {
+    if (modalOpen && modalVideo && videoRef.current && videoUnmuted) {
+      videoRef.current.muted = false;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [modalOpen, modalVideo, videoUnmuted]);
 
   return (
     <>
@@ -591,9 +601,11 @@ export default function RealFunWave() {
             ×
           </button>
           <video
+            ref={videoRef}
             src={modalVideo}
-            autoPlay
             controls
+            autoPlay
+            muted
             style={{
               maxWidth: '100vw',
               maxHeight: '100vh',
@@ -604,6 +616,23 @@ export default function RealFunWave() {
             }}
             onClick={e => e.stopPropagation()}
           />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 40,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 5200,
+              background: 'rgba(0,0,0,0.7)',
+              color: '#fff',
+              borderRadius: 18,
+              fontSize: 18,
+              padding: '8px 18px',
+              pointerEvents: 'none'
+            }}
+          >
+            Toca el ícono de volumen para activar el sonido
+          </div>
         </div>
       )}
     </>
