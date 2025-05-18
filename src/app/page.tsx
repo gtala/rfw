@@ -613,26 +613,10 @@ export default function RealFunWave() {
               height: '100vh',
               objectFit: 'contain',
               background: '#000',
+              zIndex: 5001,
             }}
             onClick={e => e.stopPropagation()}
           />
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 40,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              zIndex: 5200,
-              background: 'rgba(0,0,0,0.7)',
-              color: '#fff',
-              borderRadius: 18,
-              fontSize: 18,
-              padding: '8px 18px',
-              pointerEvents: 'none'
-            }}
-          >
-            Toca el ícono de volumen para activar el sonido
-          </div>
         </div>
       )}
     </>
