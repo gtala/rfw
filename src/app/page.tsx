@@ -411,16 +411,33 @@ export default function RealFunWave() {
           >
             {/* Only render video if not imageOnly */}
             {!slide.imageOnly && slide.video && (
-              <video
-                className={styles.heroVideo}
-                src={slide.video}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.8) contrast(1.1)'}}
-              />
+              <>
+                <video
+                  className={styles.heroVideo}
+                  src={slide.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  style={{objectFit:'cover', width:'100vw', height:'100vh', position:'absolute', top:0, left:0, zIndex:1, filter:'brightness(0.8) contrast(1.1)'}}
+                />
+                <button
+                  onClick={() => openVideoModal(slide.video)}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    zIndex: 2,
+                    background: 'rgba(0,0,0,0)',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                  aria-label="Ver video en pantalla completa"
+                />
+              </>
             )}
             <div className={styles.heroFadeTop}></div>
             <div className={styles.heroFadeBottom}></div>
@@ -439,13 +456,13 @@ export default function RealFunWave() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   width: '100%',
-                  gap: 32
+                  gap: 20
                 }}>
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: 32,
+                    gap: 12,
                     width: '100%'
                   }}>
                     <Logo color="#fdd786" size={isMobile ? 98 : 140} />
@@ -457,7 +474,8 @@ export default function RealFunWave() {
                       letterSpacing: '-0.03em',
                       lineHeight: 1.05,
                       textAlign: 'left',
-                      marginLeft: 12
+                      marginLeft: 0,
+                      textTransform: 'uppercase'
                     }}>
                       Real Fun Wave
                     </span>
@@ -476,7 +494,8 @@ export default function RealFunWave() {
                       fontWeight: 500,
                       letterSpacing: '0.01em',
                       lineHeight: 1.3,
-                      margin: 0
+                      margin: 0,
+                      textTransform: 'uppercase',
                     }}>
                       <span style={{ color: '#FEC868', fontWeight: 700 }}>#surfcamp</span> en📍Ubatuba, Brasil{"\n"}
                       Aprende a surfear con nosotros{"\n"}
@@ -533,6 +552,60 @@ export default function RealFunWave() {
           </section>
         ))}
       </div>
+
+      {/* Video Modal Fullscreen */}
+      {modalOpen && modalVideo && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.95)',
+            zIndex: 5000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <button
+            onClick={closeModal}
+            style={{
+              position: 'absolute',
+              top: 24,
+              right: 32,
+              zIndex: 5100,
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              fontSize: 36,
+              cursor: 'pointer',
+              fontWeight: 700,
+              lineHeight: 1,
+              padding: 0,
+            }}
+            aria-label="Cerrar video"
+          >
+            ×
+          </button>
+          <video
+            src={modalVideo}
+            autoPlay
+            controls
+            style={{
+              maxWidth: '100vw',
+              maxHeight: '100vh',
+              width: '100vw',
+              height: '100vh',
+              objectFit: 'contain',
+              background: '#000',
+            }}
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      )}
     </>
   );
 }
